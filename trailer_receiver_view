@@ -21,11 +21,11 @@
                     'eventLabel': decodeURIComponent(e.target.currentSrc.split('/')[e.target.currentSrc.split('/').length - 1])
                 });
 				analytics.track('trailer_receiver_view', {
-				  template_id: videos_status[e.target.id].getAttribute('id'),
-				  view_progress: videos_status[e.target.id].greatest_marker + '%',
-				  url_album: decodeURIComponent(window.location.href.split('?')[0]),
-				  album_id: decodeURIComponent(window.location.href.split('?')[0].split('/')[window.location.href.split('/').length -1]),
-				  url_trailer: decodeURIComponent(e.target.currentSrc),
+					template_id: videos_status[e.target.id].getAttribute('id'),
+					view_progress: videos_status[e.target.id].greatest_marker + '%',
+					url_album: decodeURIComponent(window.location.href.split('?')[0]),
+					album_id: decodeURIComponent(window.location.href.split('?')[0].split('/')[window.location.href.split('/').length -1]),
+					url_trailer: decodeURIComponent(e.target.currentSrc),
 				});
             }
             break;
@@ -37,11 +37,11 @@
                 'eventLabel': decodeURIComponent(e.target.currentSrc.split('/')[e.target.currentSrc.split('/').length - 1])
             });
 			analytics.track('trailer_receiver_view', {
-			  template_id: videos_status[e.target.id].getAttribute('id'),
-			  view_progress: 'Played video',
-			  url_album: decodeURIComponent(window.location.href.split('?')[0]),
-			  album_id: decodeURIComponent(window.location.href.split('?')[0].split('/')[window.location.href.split('/').length -1]),
-			  url_trailer: decodeURIComponent(e.target.currentSrc),
+				template_id: videos_status[e.target.id].getAttribute('id'),
+				view_progress: 'Played video',
+				url_album: decodeURIComponent(window.location.href.split('?')[0]),
+				album_id: decodeURIComponent(window.location.href.split('?')[0].split('/')[window.location.href.split('/').length -1]),
+				url_trailer: decodeURIComponent(e.target.currentSrc),
 			});
             break;
         case 'pause':
@@ -53,12 +53,12 @@
                 'eventValue': videos_status[e.target.id].current
             });
 			analytics.track('trailer_receiver_view', {
-			  template_id: videos_status[e.target.id].getAttribute('id'),
-			  view_progress: 'Paused video',
-			  url_album: decodeURIComponent(window.location.href.split('?')[0]),
-			  album_id: decodeURIComponent(window.location.href.split('?')[0].split('/')[window.location.href.split('/').length -1]),
-			  url_trailer: decodeURIComponent(e.target.currentSrc),
-			  view_status: videos_status[e.target.id].current,
+				template_id: videos_status[e.target.id].getAttribute('id'),
+				view_progress: 'Paused video',
+				url_album: decodeURIComponent(window.location.href.split('?')[0]),
+				album_id: decodeURIComponent(window.location.href.split('?')[0].split('/')[window.location.href.split('/').length -1]),
+				url_trailer: decodeURIComponent(e.target.currentSrc),
+				view_status: videos_status[e.target.id].current,
 			});
             break;
         case 'ended':
@@ -69,11 +69,11 @@
                 'eventLabel': decodeURIComponent(e.target.currentSrc.split('/')[e.target.currentSrc.split('/').length - 1])
             });
 			analytics.track('trailer_receiver_view', {
-			  template_id: videos_status[e.target.id].getAttribute('id'),
-			  view_progress: '100%',
-			  url_album: decodeURIComponent(window.location.href.split('?')[0]),
-			  album_id: decodeURIComponent(window.location.href.split('?')[0].split('/')[window.location.href.split('/').length -1]),
-			  url_trailer: decodeURIComponent(e.target.currentSrc),
+				template_id: videos_status[e.target.id].getAttribute('id'),
+				view_progress: '100%',
+				url_album: decodeURIComponent(window.location.href.split('?')[0]),
+				album_id: decodeURIComponent(window.location.href.split('?')[0].split('/')[window.location.href.split('/').length -1]),
+				url_trailer: decodeURIComponent(e.target.currentSrc),
 			});
             break;
         default:
