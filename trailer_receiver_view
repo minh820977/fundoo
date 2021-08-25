@@ -1,0 +1,110 @@
+<script>
+(function() {
+    var divisor = 25;
+    var videos_status = {};
+    function eventHandler(e) {
+        switch (e.type) {
+        case 'timeupdate':
+            videos_status[e.target.id].current = Math.round(e.target.currentTime);
+            var pct = Math.floor(100 * videos_status[e.target.id].current / e.target.duration);
+            for (var j in videos_status[e.target.id]._progress_markers) {
+                if (pct >= j && j > videos_status[e.target.id].greatest_marker) {
+                    videos_status[e.target.id].greatest_marker = j;
+                }
+            }
+            if (videos_status[e.target.id].greatest_marker && !videos_status[e.target.id]._progress_markers[videos_status[e.target.id].greatest_marker]) {
+                videos_status[e.target.id]._progress_markers[videos_status[e.target.id].greatest_marker] = true;
+                dataLayer.push({
+                    'event': 'video',
+                    'eventCategory': 'HTML5 Video',
+                    'eventAction': videos_status[e.target.id].greatest_marker + '%',
+                    'eventLabel': decodeURIComponent(e.target.currentSrc.split('/')[e.target.currentSrc.split('/').length - 1])
+                });
+				analytics.track('trailer_receiver_view', {
+				  template_id: videos_status[e.target.id].getAttribute('id'),
+				  view_progress: videos_status[e.target.id].greatest_marker + '%',
+				  url_album: decodeURIComponent(window.location.href.split('?')[0]),
+				  album_id: decodeURIComponent(window.location.href.split('?')[0].split('/')[window.location.href.split('/').length -1]),
+				  url_trailer: decodeURIComponent(e.target.currentSrc),
+				});
+            }
+            break;
+        case 'play':
+            dataLayer.push({
+                'event': 'video',
+                'eventCategory': 'HTML5 Video',
+                'eventAction': 'Played video',
+                'eventLabel': decodeURIComponent(e.target.currentSrc.split('/')[e.target.currentSrc.split('/').length - 1])
+            });
+			analytics.track('trailer_receiver_view', {
+			  template_id: videos_status[e.target.id].getAttribute('id'),
+			  view_progress: 'Played video',
+			  url_album: decodeURIComponent(window.location.href.split('?')[0]),
+			  album_id: decodeURIComponent(window.location.href.split('?')[0].split('/')[window.location.href.split('/').length -1]),
+			  url_trailer: decodeURIComponent(e.target.currentSrc),
+			});
+            break;
+        case 'pause':
+            dataLayer.push({
+                'event': 'video',
+                'eventCategory': 'HTML5 Video',
+                'eventAction': 'Paused video',
+                'eventLabel': decodeURIComponent(e.target.currentSrc.split('/')[e.target.currentSrc.split('/').length - 1]),
+                'eventValue': videos_status[e.target.id].current
+            });
+			analytics.track('trailer_receiver_view', {
+			  template_id: videos_status[e.target.id].getAttribute('id'),
+			  view_progress: 'Paused video',
+			  url_album: decodeURIComponent(window.location.href.split('?')[0]),
+			  album_id: decodeURIComponent(window.location.href.split('?')[0].split('/')[window.location.href.split('/').length -1]),
+			  url_trailer: decodeURIComponent(e.target.currentSrc),
+			  view_status: videos_status[e.target.id].current,
+			});
+            break;
+        case 'ended':
+            dataLayer.push({
+                'event': 'video',
+                'eventCategory': 'HTML5 Video',
+                'eventAction': '100%',
+                'eventLabel': decodeURIComponent(e.target.currentSrc.split('/')[e.target.currentSrc.split('/').length - 1])
+            });
+			analytics.track('trailer_receiver_view', {
+			  template_id: videos_status[e.target.id].getAttribute('id'),
+			  view_progress: '100%',
+			  url_album: decodeURIComponent(window.location.href.split('?')[0]),
+			  album_id: decodeURIComponent(window.location.href.split('?')[0].split('/')[window.location.href.split('/').length -1]),
+			  url_trailer: decodeURIComponent(e.target.currentSrc),
+			});
+            break;
+        default:
+            break;
+        }
+    }   
+    var videos = document.getElementsByTagName('video');
+    for (var i = 0; i < videos.length; i++) {
+        var videoTagId;
+        if (!videos[i].getAttribute('id')) {
+            // Generate a random alphanumeric string to use is as the id
+            videoTagId = 'html5_video_' + Math.random().toString(36).slice(2);
+            videos[i].setAttribute('id', videoTagId);
+        }
+        else {
+            videoTagId = videos[i].getAttribute('id');
+        }
+        // Video Status Object declaration  
+        videos_status[videoTagId] = {};
+        videos_status[videoTagId].greatest_marker = 0;
+        videos_status[videoTagId]._progress_markers = {};
+        for (j = 0; j < 100; j++) {
+            videos_status[videoTagId].progress_point = divisor * Math.floor(j / divisor);
+            videos_status[videoTagId]._progress_markers[videos_status[videoTagId].progress_point] = false;
+        }
+        videos_status[videoTagId].current = 0;
+        videos[i].addEventListener("play", eventHandler, false);
+        videos[i].addEventListener("pause", eventHandler, false);
+        videos[i].addEventListener("ended", eventHandler, false);
+        videos[i].addEventListener("timeupdate", eventHandler, false);
+        videos[i].addEventListener("ended", eventHandler, false);
+    }
+})();
+</script>
